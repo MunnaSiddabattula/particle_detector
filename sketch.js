@@ -4,8 +4,11 @@ const screenWidth = 300;
 const screenHeight = 200;
 const FPS = 60;
 
-const obstWidth = 50;
-const obst1x = (screenWidth * 0.5) - obstWidth;
+const particle1Width = 50;
+const particle1x = (screenWidth * 0.5) - particleWidth;
+
+const particle2x = (screenWidth * 0.70);
+particle2Width = 20;
 
 let scannerPosition = 0;
 let scannerWidth = 30;
@@ -39,7 +42,7 @@ function move() {
     }
 }
 function overlap() {
-    if (scannerPosition < (obst1x + obstWidth) && obst1x < (scannerPosition + scannerWidth)) {
+    if (scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth)) {
         return "detected";
     }
 }
@@ -49,10 +52,16 @@ function draw() {
     r.ClearBackground(r.BLACK)
 
     r.DrawRectangle(
-        obst1x,
+        particle1x,
         0,
-        obstWidth,
+        particleWidth,
         screenHeight,
+        r.BLUE
+    );
+    r.DrawRectangle(
+        particle2x,
+        0,
+        particle2Width,
         r.BLUE
     );
     if (overlap() === "detected")
