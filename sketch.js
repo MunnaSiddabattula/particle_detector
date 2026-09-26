@@ -1,8 +1,11 @@
 const r = require("raylib");
 
-const screenWidth = 600;
-const screenHeight = 400;
+const screenWidth = 300;
+const screenHeight = 200;
 const FPS = 60;
+
+const obstWidth = 50;
+const obst1x = (screenWidth * 0.5) - obstWidth;
 
 let scannerPosition = 0;
 let scannerWidth = 30;
@@ -35,27 +38,39 @@ function move() {
         scannerDirection = 1;
     }
 }
+function overlap() {
+    if (scannerPosition < (obst1x + obstWidth) && obst1x < (scannerPosition + scannerWidth)) {
+        return "detected";
+    }
+}
 
 function draw() {
-    let obstWidth = 50;
     r.BeginDrawing();
     r.ClearBackground(r.BLACK)
 
     r.DrawRectangle(
-        ((screenWidth * 1.5) - obstWidth),
+        obst1x,
         0,
         obstWidth,
         screenHeight,
         r.BLUE
     );
-
-    r.DrawRectangle(
-        scannerPosition,
-        0,
-        scannerWidth,
-        screenHeight,
-        r.WHITE
-    );
+    if (overlap() === "detected")
+        r.DrawRectangle(
+            scannerPosition,
+            0,
+            scannerWidth,
+            screenHeight,
+            r.RED
+        );
+    else {
+        r.DrawRectangle(
+            scannerPosition,
+            0,
+            scannerWidth,
+            screenHeight,
+            r.WHITE);
+    }
     r.EndDrawing();
 }
 
