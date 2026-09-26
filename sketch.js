@@ -15,9 +15,10 @@ let scannerWidth = 30;
 
 let scanner2X = (screenWidth * 0.5);
 
-let scannerDirection = 1;
-let scannerSpeed = 5;
-let scanner2Speed = 2;
+let scanner1Direction = 1;
+let scanner2Direction = 1;
+let scannerSpeed = 3;
+let scanner2Speed = 2.5;
 
 function running() {
     return !r.WindowShouldClose();
@@ -34,29 +35,29 @@ function update() {
 }
 
 function moveScanner1() {
-    scanner1X += scannerDirection * scannerSpeed;
+    scanner1X += scanner1Direction * scannerSpeed;
 
     if (scanner1X + scannerWidth >= (screenWidth * 0.5)) {
         scanner1X = (screenWidth * 0.5) - scannerWidth;
-        scannerDirection = -1;
+        scanner1Direction = -1;
     }
 
     if (scanner1X <= 0) {
         scanner1X = 0;
-        scannerDirection = 1;
+        scanner1Direction = 1;
     }
 }
 function moveScanner2() {
-    scanner2X += scannerDirection * scanner2Speed;
+    scanner2X += scanner2Direction * scanner2Speed;
+
+    if (scanner2X <= screenWidth * 0.5) {
+        scanner2X = screenWidth * 0.5;
+        scanner2Direction = 1;
+    }
 
     if (scanner2X + scannerWidth >= screenWidth) {
         scanner2X = screenWidth - scannerWidth;
-        scannerDirection = -1;
-    }
-
-    if (scanner2X <= 0) {
-        scanner2X = 0;
-        scannerDirection = 1;
+        scanner2Direction = -1;
     }
 }
 function overlap(scannerPosition, scannerWidth, particle1x, particle1Width) {
