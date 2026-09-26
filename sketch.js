@@ -1,14 +1,14 @@
 const r = require("raylib");
 
-const screenWidth = 300;
-const screenHeight = 200;
+const screenWidth = 800;
+const screenHeight = 400;
 const FPS = 60;
 
 const particle1Width = 50;
-const particle1x = (screenWidth * 0.5) - particleWidth;
+const particle1x = (screenWidth * 0.5) - particle1Width;
 
 const particle2x = (screenWidth * 0.70);
-particle2Width = 20;
+const particle2Width = 20;
 
 let scannerPosition = 0;
 let scannerWidth = 30;
@@ -41,10 +41,8 @@ function move() {
         scannerDirection = 1;
     }
 }
-function overlap() {
-    if (scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth)) {
-        return "detected";
-    }
+function overlap(scannerPosition, scannerWidth, particle1x, particle1Width) {
+    return (scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth));
 }
 
 function draw() {
@@ -54,17 +52,20 @@ function draw() {
     r.DrawRectangle(
         particle1x,
         0,
-        particleWidth,
+        particle1Width,
         screenHeight,
-        r.BLUE
-    );
+        r.BLUE);
+
     r.DrawRectangle(
         particle2x,
         0,
         particle2Width,
+        screenHeight,
         r.BLUE
     );
-    if (overlap() === "detected")
+    detected1 = overlap(scannerPosition, scannerWidth, particle1x, particle1Width);
+    detected2 = overlap(scannerPosition, scannerWidth, particle2x, particle2Width);
+    if (detected1 || detected2) {
         r.DrawRectangle(
             scannerPosition,
             0,
@@ -72,7 +73,7 @@ function draw() {
             screenHeight,
             r.RED
         );
-    else {
+    } else {
         r.DrawRectangle(
             scannerPosition,
             0,
