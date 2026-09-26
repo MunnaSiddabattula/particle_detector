@@ -13,12 +13,17 @@ const particle2Width = 20;
 let scanner1X = 0;
 let scannerWidth = 30;
 
+let scannerY = 0;
+
 let scanner2X = (screenWidth * 0.5);
 
 let scanner1Direction = 1;
 let scanner2Direction = 1;
+let scanner3Direction = 1;
 let scannerSpeed = 3;
 let scanner2Speed = 2.5;
+let scannerYSpeed = 5;
+
 
 function running() {
     return !r.WindowShouldClose();
@@ -32,6 +37,21 @@ function setup() {
 function update() {
     moveScanner1();
     moveScanner2();
+    moveScannerY();
+}
+
+function moveScannerY() {
+    scannerY += scanner3Direction * scannerYSpeed;
+
+    if (scannerY + scannerWidth >= (screenHeight)) {
+        scannerY = (screenHeight) - scannerWidth;
+        scanner3Direction = -1;
+    }
+
+    if (scannerY <= 0) {
+        scannerY = 0;
+        scanner3Direction = 1;
+    }
 }
 
 function moveScanner1() {
@@ -60,9 +80,6 @@ function moveScanner2() {
         scanner2Direction = -1;
     }
 }
-function overlap(scannerPosition, scannerWidth, particle1x, particle1Width) {
-    return (scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth));
-}
 
 function draw() {
     r.BeginDrawing();
@@ -82,9 +99,42 @@ function draw() {
         screenHeight,
         r.BLUE
     );
-    const detected1 = overlap(scanner1X, scannerWidth, particle1x, particle1Width);
-    const detected2 = overlap(scanner2X, scannerWidth, particle2x, particle2Width);
-    if (detected1) {
+
+    function overlap(scannerPosition, scannerWidth, particle1x, particle1Width) {
+        return (scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth));
+    }
+
+    const particle3y = 10;
+    const particleY = 100;
+
+    r.DrawRectangle(0,
+        particleY,
+        screenWidth,
+        particle3y,
+        r.BLUE);
+
+
+    const detected1X = overlap(scanner1X, scannerWidth, particle1x, particle1Width);
+    const detected2X = overlap(scanner2X, scannerWidth, particle2x, particle2Width);
+    const detectedY = overlap(scannerY, scannerWidth, particleY, particle3y)
+    if (detectedY) {
+        r.DrawRectangle(
+            0,
+            scannerY,
+            screenWidth,
+            scannerWidth,
+            r.RED);
+    } else {
+        r.DrawRectangle(
+            0,
+            scannerY,
+            screenWidth,
+            scannerWidth,
+            r.WHITE);
+
+    }
+
+    if (detected1X) {
         r.DrawRectangle(
             scanner1X,
             0,
@@ -101,7 +151,7 @@ function draw() {
             r.WHITE);
     }
 
-    if (detected2) {
+    if (detected2X) {
         r.DrawRectangle(
             scanner2X,
             0,
