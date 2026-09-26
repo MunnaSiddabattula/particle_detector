@@ -63,8 +63,10 @@ function draw() {
         screenHeight,
         r.BLUE
     );
-    detected1 = overlap(scannerPosition, scannerWidth, particle1x, particle1Width);
-    detected2 = overlap(scannerPosition, scannerWidth, particle2x, particle2Width);
+    r.DrawLine(screenWidth * 0.5, 0, r.WHITE);
+
+    const detected1 = overlap(scannerPosition, scannerWidth, particle1x, particle1Width);
+    const detected2 = overlap(scannerPosition, scannerWidth, particle2x, particle2Width);
     if (detected1 || detected2) {
         r.DrawRectangle(
             scannerPosition,
