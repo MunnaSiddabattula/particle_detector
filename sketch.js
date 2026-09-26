@@ -37,8 +37,17 @@ function move() {
 }
 
 function draw() {
+    let obstWidth = 50;
     r.BeginDrawing();
     r.ClearBackground(r.BLACK)
+
+    r.DrawRectangle(
+        ((screenWidth * 0.5) - obstWidth),
+        0,
+        obstWidth,
+        screenHeight,
+        r.BLUE
+    );
 
     r.DrawRectangle(
         scannerPosition,
