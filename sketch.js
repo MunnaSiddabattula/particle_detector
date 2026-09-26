@@ -42,7 +42,7 @@ function draw() {
     r.ClearBackground(r.BLACK)
 
     r.DrawRectangle(
-        ((screenWidth * 0.5) - obstWidth),
+        ((screenWidth * 1.5) - obstWidth),
         0,
         obstWidth,
         screenHeight,
