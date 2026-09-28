@@ -1,17 +1,26 @@
 const r = require("raylib");
-const f = require("./scanner")
+
 const screenWidth = 800;
 const screenHeight = 400;
 const FPS = 60;
+const particle1Width = 50;
+const particle1x = (screenWidth * 0.5) - particle1Width;
+
+const particle2x = (screenWidth * 0.70);
+const particle2Width = 20;
+
+const particleY = 100;
+const particleWidth = 10;
+
 
 let scanner1X = 0;
 let scanner1Direction = 1;
 
 let scanner2X = (screenWidth * 0.5);
-let scanner2Direction = 1;
+
 
 let scannerY = 0;
-let scanner3Direction = 1;
+
 
 let scannerWidth = 30;
 
@@ -27,86 +36,36 @@ function setup() {
 }
 
 function update() {
-    scanner1X = moveScanner(scanner1X, 0, screenWidth / 2);
-    scanner2X = moveScanner(scanner2X, screenWidth / 2, screenWidth);
-    scannerY = moveScanner(scannerY, 0, screenHeight);
+    const s1Boundary = screenWidth * 0.5;
+    const s2Boundary = screenWidth;
+    scanner1X += moveScanner(scanner1X, s1Boundary, 0);
+    scanner2X += moveScanner(scanner2X, s2Boundary, s1Boundary);
+    scannerY += moveScanner(scannerY, screenHeight, 0);
 }
-// function overlap(scannerPosition, scannerWidth, particle1x, particle1Width) {
-
-//     if ((scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth))) {
-//         return r.RED;
-//     }
-//     return r.WHITE;
-// }
-
-// function moveScannerY() {
-//     let scannerYSpeed = 5;
 
 
-//     scannerY += scanner3Direction * scannerYSpeed;
+function moveScanner(scannerStart, scannerRightBoundary, scannerLeftBoundary) {
+    if (scannerStart + scannerWidth >= scannerRightBoundary) {
+        scanner1Direction = -2;
+    }
 
-//     if (scannerY + scannerWidth >= (screenHeight)) {
-//         scannerY = (screenHeight) - scannerWidth;
-//         scanner3Direction = -1;
-//     }
-
-//     if (scannerY <= 0) {
-//         scannerY = 0;
-//         scanner3Direction = 1;
-//     }
-// }
-
-// function moveScanner1() {
-//     let scannerSpeed = 3;
-
-//     scanner1X += scanner1Direction * scannerSpeed;
-
-//     if (scanner1X + scannerWidth >= (screenWidth * 0.5)) {
-//         scanner1X = (screenWidth * 0.5) - scannerWidth;
-//         scanner1Direction = -1;
-//     }
-
-//     if (scanner1X <= 0) {
-//         scanner1X = 0;
-//         scanner1Direction = 1;
-//     }
-// }
-// function moveScanner2() {
-//     let scanner2Speed = 2.5;
+    if (scannerStart <= scannerLeftBoundary) {
+        scanner1Direction = 2;
+    }
+    return scanner1Direction;
+}
 
 
-//     scanner2X += scanner2Direction * scanner2Speed;
-
-//     if (scanner2X <= screenWidth * 0.5) {
-//         scanner2X = screenWidth * 0.5;
-//         scanner2Direction = 1;
-//     }
-
-//     if (scanner2X + scannerWidth >= screenWidth) {
-//         scanner2X = screenWidth - scannerWidth;
-//         scanner2Direction = -1;
-//     }
-// }
 function overlap(scannerPosition, scannerWidth, particle1x, particle1Width) {
-    return (scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth));
+
+    if ((scannerPosition < (particle1x + particle1Width) && particle1x < (scannerPosition + scannerWidth))) {
+        return r.RED;
+    } else {
+        return r.WHITE;
+    }
 }
+function drawRange() {
 
-function draw() {
-    const particle1Width = 50;
-    const particle1x = (screenWidth * 0.5) - particle1Width;
-
-    const particle2x = (screenWidth * 0.70);
-    const particle2Width = 20;
-
-    const particleY = 100;
-    const particleWidth = 10;
-
-    const detected1X = overlap(scanner1X, scannerWidth, particle1x, particle1Width);
-    const detected2X = overlap(scanner2X, scannerWidth, particle2x, particle2Width);
-    const detectedY = overlap(scannerY, scannerWidth, particleY, particleWidth);
-
-    r.BeginDrawing();
-    r.ClearBackground(r.BLACK)
 
     r.DrawRectangle(
         particle1x,
@@ -122,62 +81,64 @@ function draw() {
         screenHeight,
         r.BLUE
     );
-
     r.DrawRectangle(0,
         particleY,
         screenWidth,
         particleWidth,
         r.BLUE);
-    if (detectedY) {
-        r.DrawRectangle(
-            0,
-            scannerY,
-            screenWidth,
-            scannerWidth,
-            r.RED);
-    } else {
-        r.DrawRectangle(
-            0,
-            scannerY,
-            screenWidth,
-            scannerWidth,
-            r.WHITE);
 
-    }
+}
 
-    if (detected1X) {
-        r.DrawRectangle(
-            scanner1X,
-            0,
-            scannerWidth,
-            screenHeight,
-            r.RED
-        );
-    } else {
-        r.DrawRectangle(
-            scanner1X,
-            0,
-            scannerWidth,
-            screenHeight,
-            r.WHITE);
-    }
 
-    if (detected2X) {
-        r.DrawRectangle(
-            scanner2X,
-            0,
-            scannerWidth,
-            screenHeight,
-            r.RED
-        );
-    } else {
-        r.DrawRectangle(
-            scanner2X,
-            0,
-            scannerWidth,
-            screenHeight,
-            r.WHITE);
-    }
+
+function draw() {
+
+
+    r.BeginDrawing();
+    r.ClearBackground(r.BLACK)
+
+    drawRange(
+        particle1x,
+        0,
+        particle1Width);
+
+    drawRange(
+        particle2x,
+        0,
+        particle2Width);
+
+    drawRange(0,
+        particleY,
+        particleWidth);
+
+    const color1 = overlap(scanner1X, scannerWidth, particle1x, particle1Width);
+    const color2 = overlap(scanner2X, scannerWidth, particle2x, particle2Width);
+    const color3 = overlap(scannerY, scannerWidth, particleY, particleWidth);
+
+    r.DrawRectangle(
+        scanner1X,
+        0,
+        scannerWidth,
+        screenHeight,
+        color1);
+
+
+    r.DrawRectangle(
+        scanner2X,
+        0,
+        scannerWidth,
+        screenHeight,
+        color2);
+
+    r.DrawRectangle(
+        0,
+        scannerY,
+        screenWidth,
+        scannerWidth,
+        color3);
+
+
+
 
     r.EndDrawing();
 }
@@ -193,81 +154,4 @@ module.exports = {
     update,
     draw,
     teardown,
-
-};
-// function draw() {
-//     const particle1Width = 50;
-//     const particle1x = (screenWidth * 0.5) - particle1Width;
-
-//     const particle2x = (screenWidth * 0.70);
-//     const particle2Width = 20;
-
-//     const particleY = 100;
-//     const particleWidth = 10;
-
-//     const color1 = overlap(scanner1X, scannerWidth, particle1x, particle1Width);
-//     const color2 = overlap(scanner2X, scannerWidth, particle2x, particle2Width);
-//     const color3 = overlap(scannerY, scannerWidth, particleY, particleWidth);
-
-//     r.BeginDrawing();
-//     r.ClearBackground(r.BLACK)
-
-//     r.DrawRectangle(
-//         particle1x,
-//         0,
-//         particle1Width,
-//         screenHeight,
-//         r.BLUE);
-
-//     r.DrawRectangle(
-//         particle2x,
-//         0,
-//         particle2Width,
-//         screenHeight,
-//         r.BLUE
-//     );
-
-
-
-//     r.DrawRectangle(0,
-//         particleY,
-//         screenWidth,
-//         particleWidth,
-//         r.BLUE);
-
-//     r.DrawRectangle(0, scannerY, screenWidth, scannerWidth, color1);
-
-
-
-//     r.DrawRectangle(
-//         scanner1X,
-//         0,
-//         scannerWidth,
-//         screenHeight,
-//         color2
-//     );
-
-//     r.DrawRectangle(
-//         scanner2X,
-//         0,
-//         scannerWidth,
-//         screenHeight,
-//         color3);
-
-
-//     r.EndDrawing();
-// }
-
-// function teardown() {
-//     r.CloseWindow();
-// }
-
-
-// module.exports = {
-//     running,
-//     setup,
-//     update,
-//     draw,
-//     teardown,
-
-// };
+}
