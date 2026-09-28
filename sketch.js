@@ -50,9 +50,7 @@ function isOutofBounds(detectorPos, upperBound, lowerBound) {
 }
 
 function calcVelocity(velocity, detectorPos, upperBound, lowerBound) {
-    if (isOutofBounds(detectorPos, upperBound, lowerBound))
-        velocity = -velocity
-    return velocity;
+    return (isOutofBounds(detectorPos, upperBound, lowerBound)) ? -velocity : velocity;
 }
 
 function overlap(detectorPosition, detectorWidth, particle1x, particle1Width) {
