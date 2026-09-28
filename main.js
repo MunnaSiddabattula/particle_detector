@@ -13,4 +13,3 @@ function main() {
     sketch.teardown();
 }
 main();
-
