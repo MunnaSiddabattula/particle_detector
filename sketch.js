@@ -14,7 +14,7 @@ const particleWidth = 10;
 
 
 let scanner1X = 0;
-let scanner1Direction = 1;
+let scanner1Direction = 2;
 
 let scanner2X = (screenWidth * 0.5);
 
@@ -49,9 +49,9 @@ function moveScanner(scannerStart, scannerRightBoundary, scannerLeftBoundary) {
         scanner1Direction = -2;
     }
 
-    if (scannerStart <= scannerLeftBoundary) {
-        scanner1Direction = 2;
-    }
+    // if (scannerStart <= scannerLeftBoundary) {
+    //     scanner1Direction = 2;
+    // }
     return scanner1Direction;
 }
 
