@@ -9,6 +9,7 @@ function moveScanner(scannerPos, max, min) {
     if (scannerPos === min) {
         direction = 1;
     }
+    return scannerPos += direction;
 }
 
 
