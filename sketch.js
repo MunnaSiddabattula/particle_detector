@@ -4,16 +4,9 @@ const d1 = require("./d1.js")
 const d3 = require("./d3.js")
 const d2 = require("./d2.js")
 const w = require("./window.js")
-
-const field1Width = 50;
-const field1x = (w.width * 0.5) - field1Width;
-
-
-const field2x = (w.width * 0.70);
-const field2Width = 20;
-
-const fieldY = 100;
-const field3Width = 10;
+const f1 = require("./field.js")
+const f2 = require("./field2.js")
+const f3 = require("./field3.js")
 
 function running() {
     return !r.WindowShouldClose();
@@ -43,19 +36,19 @@ function draw() {
     r.BeginDrawing();
     r.ClearBackground(r.BLACK)
 
-    r.DrawRectangle(field1x, 0, field1Width, w.height, r.BLUE);
+    r.DrawRectangle(f1.pos, 0, f1.width, w.height, r.BLUE);
 
-    r.DrawRectangle(field2x, 0, field2Width, w.height, r.BLUE);
+    r.DrawRectangle(f2.pos, 0, f2.width, w.height, r.BLUE);
 
-    r.DrawRectangle(0, fieldY, w.width, field3Width, r.BLUE);
+    r.DrawRectangle(0, f3.pos, w.width, f3.width, r.BLUE);
 
 
 
-    r.DrawRectangle(d1.x, 0, d1.width, w.height, d.chooseColor(d1.x, d1.width, field1x, field1Width));
+    r.DrawRectangle(d1.x, 0, d1.width, w.height, d.chooseColor(d1.x, d1.width, f1.pos, f1.width));
 
-    r.DrawRectangle(d2.x, 0, d2.width, w.height, d.chooseColor(d2.x, d2.width, field2x, field2Width));
+    r.DrawRectangle(d2.x, 0, d2.width, w.height, d.chooseColor(d2.x, d2.width, f2.pos, f2.width));
 
-    r.DrawRectangle(0, d3.x, w.width, d3.width, d.chooseColor(d3.x, d3.width, fieldY, field3Width));
+    r.DrawRectangle(0, d3.x, w.width, d3.width, d.chooseColor(d3.x, d3.width, f3.pos, f3.width));
 
     r.EndDrawing();
 }
